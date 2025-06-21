@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import DashboardLayout from "../components/DashboardLayout";
 
-const BACKEND_URL = process.env.REACT_APP_API_URL;
+const BACKEND_URL = "https://kflex-backend.vercel.app"; // 🔥 Hardcoded for production
 
 const Products = () => {
   const [products, setProducts] = useState([]);
@@ -143,7 +143,10 @@ const Products = () => {
             </thead>
             <tbody>
               {products.map((p) => (
-                <tr key={p._id} className="border-b transition hover:bg-yellow-50 hover:scale-[1.005]">
+                <tr
+                  key={p._id}
+                  className="border-b transition hover:bg-yellow-50 hover:scale-[1.005]"
+                >
                   <td className="p-3">
                     <img
                       src={p.image}
@@ -174,7 +177,8 @@ const Products = () => {
             </tbody>
           </table>
         </div>
-        {/* Modals remain unchanged */}
+
+        {/* You can add your modal UI here later if needed */}
       </div>
     </DashboardLayout>
   );
