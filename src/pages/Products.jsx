@@ -69,7 +69,10 @@ const Products = () => {
 
     try {
       if (editingProduct) {
-        await axios.put(`${BACKEND_URL}/api/products/${editingProduct._id}`, formData);
+        await axios.put(
+          `${BACKEND_URL}/api/products/${editingProduct._id}`,
+          formData
+        );
         showAlert("Product Updated ✅");
       } else {
         await axios.post(`${BACKEND_URL}/api/products`, formData);
@@ -140,12 +143,12 @@ const Products = () => {
             </thead>
             <tbody>
               {products.map((p) => (
-                <tr key={p._id} className="border-b hover:bg-yellow-50">
+                <tr key={p._id} className="border-b transition hover:bg-yellow-50 hover:scale-[1.005]">
                   <td className="p-3">
                     <img
                       src={p.image}
                       alt={p.name}
-                      className="w-16 h-16 object-cover rounded-lg"
+                      className="w-16 h-16 object-cover rounded-lg shadow"
                     />
                   </td>
                   <td className="p-3">{p.name}</td>
@@ -153,15 +156,17 @@ const Products = () => {
                   <td className="p-3 flex gap-2">
                     <button
                       onClick={() => openModal(p)}
+                      title="Edit"
                       className="bg-yellow-400 text-black px-3 py-1 rounded hover:bg-yellow-500"
                     >
-                      Edit
+                      ✏️
                     </button>
                     <button
                       onClick={() => confirmDelete(p._id)}
+                      title="Delete"
                       className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
                     >
-                      Delete
+                      🗑️
                     </button>
                   </td>
                 </tr>
@@ -172,57 +177,88 @@ const Products = () => {
 
         {/* Modal */}
         {modalOpen && (
-          <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50">
-            <div className="bg-white p-6 rounded-2xl shadow-xl w-full max-w-md relative">
-              <button
-                onClick={() => setModalOpen(false)}
-                className="absolute top-2 right-3 text-2xl text-gray-500 hover:text-black"
-              >
-                &times;
-              </button>
-              <h3 className="text-xl font-bold mb-4 text-yellow-700">
-                {editingProduct ? "Edit Product" : "Add Product"}
+          <div className="fixed inset-0 z-50 flex justify-center items-center bg-black/40 backdrop-blur-sm">
+            <div className="bg-white/80 backdrop-blur-xl shadow-2xl rounded-2xl p-6 w-full max-w-md border border-white/30">
+              <h3 className="text-2xl font-semibold mb-4 text-black">
+                {editingProduct ? "Edit" : "Add"} Product
               </h3>
-              <form onSubmit={handleSubmit} className="space-y-3">
+              <form onSubmit={handleSubmit} className="space-y-4">
                 <input
-                  type="text"
                   name="name"
                   placeholder="Product Name"
                   value={form.name}
                   onChange={handleChange}
-                  required
-                  className="w-full border p-2 rounded-xl"
+                  className="bg-white/60 border border-gray-300 p-2 w-full rounded focus:ring-2 focus:ring-yellow-400"
                 />
-                <textarea
+                <input
                   name="description"
                   placeholder="Description"
                   value={form.description}
                   onChange={handleChange}
-                  required
-                  className="w-full border p-2 rounded-xl"
+                  className="bg-white/60 border border-gray-300 p-2 w-full rounded focus:ring-2 focus:ring-yellow-400"
                 />
                 <input
-                  type="number"
                   name="price"
                   placeholder="Price"
+                  type="number"
                   value={form.price}
                   onChange={handleChange}
-                  required
-                  className="w-full border p-2 rounded-xl"
+                  className="bg-white/60 border border-gray-300 p-2 w-full rounded focus:ring-2 focus:ring-yellow-400"
                 />
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImage}
-                  className="w-full"
-                />
-                <button
-                  type="submit"
-                  className="bg-yellow-500 w-full py-2 text-white rounded-xl hover:bg-yellow-600"
-                >
-                  {editingProduct ? "Update" : "Add"} Product
-                </button>
+                <div>
+                  <label className="block mb-1 text-gray-700 font-medium">
+                    Upload Image
+                  </label>
+                  <input
+                    type="file"
+                    onChange={handleImage}
+                    className="block w-full text-sm text-gray-700 border border-gray-300 rounded-lg bg-white/70 file:bg-[#feb500] file:text-black file:border-none file:px-4 file:py-2 file:rounded-full"
+                  />
+                </div>
+                <div className="flex justify-end gap-3 pt-2">
+                  <button
+                    type="button"
+                    onClick={() => setModalOpen(false)}
+                    className="bg-gray-100 px-4 py-2 rounded hover:bg-gray-200"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="bg-[#feb500] px-5 py-2 rounded hover:bg-yellow-400"
+                  >
+                    {editingProduct ? "Update" : "Add"}
+                  </button>
+                </div>
               </form>
+            </div>
+          </div>
+        )}
+
+        {/* Delete Confirmation */}
+        {deleteConfirm && (
+          <div className="fixed inset-0 z-50 flex justify-center items-center bg-black/40 backdrop-blur-sm">
+            <div className="bg-white/90 rounded-xl p-6 w-full max-w-sm text-center">
+              <h2 className="text-xl font-semibold text-black mb-3">
+                Are you sure?
+              </h2>
+              <p className="text-gray-600 mb-6">
+                This will permanently delete the product.
+              </p>
+              <div className="flex justify-center gap-4">
+                <button
+                  onClick={() => setDeleteConfirm(null)}
+                  className="bg-gray-200 px-4 py-2 rounded hover:bg-gray-300"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={deleteProduct}
+                  className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+                >
+                  Delete
+                </button>
+              </div>
             </div>
           </div>
         )}
