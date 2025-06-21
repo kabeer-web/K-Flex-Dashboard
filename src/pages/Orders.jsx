@@ -4,6 +4,8 @@ import DashboardLayout from "../components/DashboardLayout";
 import * as XLSX from "xlsx";
 import { motion, AnimatePresence } from "framer-motion";
 
+const BACKEND_URL = process.env.REACT_APP_API_URL;
+
 const Orders = () => {
   const [orders, setOrders] = useState([]);
   const [filteredOrders, setFilteredOrders] = useState([]);
@@ -16,7 +18,7 @@ const Orders = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/orders");
+        const res = await axios.get(`${BACKEND_URL}/api/orders`);
         setOrders(res.data);
         setFilteredOrders(res.data);
       } catch (err) {
@@ -42,7 +44,7 @@ const Orders = () => {
 
   const deleteOrder = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/orders/${id}`);
+      await axios.delete(`${BACKEND_URL}/api/orders/${id}`);
       setOrders(orders.filter((o) => o._id !== id));
     } catch (err) {
       console.error("Delete error:", err);
@@ -51,7 +53,7 @@ const Orders = () => {
 
   const updateStatus = async (id, status) => {
     try {
-      await axios.put(`http://localhost:5000/api/orders/${id}`, { status });
+      await axios.put(`${BACKEND_URL}/api/orders/${id}`, { status });
       setOrders(orders.map((o) => (o._id === id ? { ...o, status } : o)));
       setSelectedOrder((prev) => ({ ...prev, status }));
     } catch (err) {
