@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import DashboardLayout from "../components/DashboardLayout";
 
+// ✅ Use env or hardcoded deployed URL
+const BACKEND_URL = process.env.REACT_APP_API_URL || "https://kflex-backend.vercel.app";
+
 const ReviewDashboard = () => {
   const [reviews, setReviews] = useState([]);
   const [search, setSearch] = useState("");
@@ -22,7 +25,7 @@ const ReviewDashboard = () => {
 
   const fetchReviews = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/reviews");
+      const res = await axios.get(`${BACKEND_URL}/api/reviews`);
       setReviews(res.data);
       setFilteredReviews(res.data);
     } catch (err) {
@@ -32,7 +35,7 @@ const ReviewDashboard = () => {
 
   const deleteReview = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/reviews/${id}`);
+      await axios.delete(`${BACKEND_URL}/api/reviews/${id}`);
       setReviews((prev) => prev.filter((r) => r._id !== id));
     } catch (err) {
       console.error("Delete error:", err);
