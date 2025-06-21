@@ -4,7 +4,7 @@ import DashboardLayout from "../components/DashboardLayout";
 import * as XLSX from "xlsx";
 import { motion, AnimatePresence } from "framer-motion";
 
-const BACKEND_URL = process.env.REACT_APP_API_URL;
+const BACKEND_URL = "https://kflex-backend.vercel.app";
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);
