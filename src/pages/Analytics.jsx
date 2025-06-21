@@ -23,8 +23,11 @@ const Analytics = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const ordersRes = await axios.get("http://localhost:5000/api/orders");
-      const productsRes = await axios.get("http://localhost:5000/api/products");
+      const baseURL = process.env.REACT_APP_API_URL;
+
+      const ordersRes = await axios.get(`${baseURL}/api/orders`);
+      const productsRes = await axios.get(`${baseURL}/api/products`);
+      
       setOrders(ordersRes.data);
       setProducts(productsRes.data);
     };
