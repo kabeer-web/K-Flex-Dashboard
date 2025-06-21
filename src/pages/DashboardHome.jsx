@@ -17,8 +17,8 @@ import {
   Legend,
 } from "recharts";
 
-// ✅ Use .env for backend API
-const BACKEND_URL = process.env.REACT_APP_API_URL;
+// ✅ Direct backend URL
+const BACKEND_URL = "https://kflex-backend.vercel.app";
 
 const DashboardHome = () => {
   const [stats, setStats] = useState({
