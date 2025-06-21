@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import DashboardLayout from "../components/DashboardLayout";
 
-const BACKEND_URL = "https://kflex-backend.vercel.app"; // 🔥 Hardcoded for production
+const BACKEND_URL = "https://kflex-backend.vercel.app"; // ✅ Production URL
 
 const Products = () => {
   const [products, setProducts] = useState([]);
@@ -178,7 +178,63 @@ const Products = () => {
           </table>
         </div>
 
-        {/* You can add your modal UI here later if needed */}
+        {/* ✅ MODAL UI */}
+        {modalOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+            <div className="bg-white p-6 rounded-xl w-full max-w-lg shadow-2xl relative">
+              <button
+                onClick={() => setModalOpen(false)}
+                className="absolute top-2 right-4 text-2xl text-gray-600 hover:text-black"
+              >
+                &times;
+              </button>
+              <h3 className="text-xl font-bold mb-4 text-yellow-700">
+                {editingProduct ? "Edit Product" : "Add Product"}
+              </h3>
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <input
+                  type="text"
+                  name="name"
+                  value={form.name}
+                  onChange={handleChange}
+                  placeholder="Product Name"
+                  required
+                  className="w-full border p-2 rounded-xl"
+                />
+                <textarea
+                  name="description"
+                  value={form.description}
+                  onChange={handleChange}
+                  placeholder="Product Description"
+                  required
+                  className="w-full border p-2 rounded-xl"
+                />
+                <input
+                  type="number"
+                  name="price"
+                  value={form.price}
+                  onChange={handleChange}
+                  placeholder="Price"
+                  required
+                  className="w-full border p-2 rounded-xl"
+                />
+                <input
+                  type="file"
+                  name="image"
+                  onChange={handleImage}
+                  accept="image/*"
+                  className="w-full"
+                />
+                <button
+                  type="submit"
+                  className="bg-[#feb500] text-black px-4 py-2 rounded-xl w-full font-semibold hover:bg-yellow-600 transition"
+                >
+                  {editingProduct ? "Update" : "Add"} Product
+                </button>
+              </form>
+            </div>
+          </div>
+        )}
       </div>
     </DashboardLayout>
   );
