@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import DashboardLayout from "../components/DashboardLayout";
 
+const BACKEND_URL = "https://kflex-backend.vercel.app";
+
 const Products = () => {
   const [products, setProducts] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
@@ -17,7 +19,7 @@ const Products = () => {
 
   const fetchProducts = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/products");
+      const res = await axios.get(`${BACKEND_URL}/api/products`);
       setProducts(res.data);
     } catch (err) {
       console.error("Fetch error:", err);
@@ -68,12 +70,12 @@ const Products = () => {
     try {
       if (editingProduct) {
         await axios.put(
-          `http://localhost:5000/api/products/${editingProduct._id}`,
+          `${BACKEND_URL}/api/products/${editingProduct._id}`,
           formData
         );
         showAlert("Product Updated ✅");
       } else {
-        await axios.post("http://localhost:5000/api/products", formData);
+        await axios.post(`${BACKEND_URL}/api/products`, formData);
         showAlert("Product Added ✅");
       }
       fetchProducts();
@@ -90,7 +92,7 @@ const Products = () => {
 
   const deleteProduct = async () => {
     try {
-      await axios.delete(`http://localhost:5000/api/products/${deleteConfirm}`);
+      await axios.delete(`${BACKEND_URL}/api/products/${deleteConfirm}`);
       showAlert("Product Deleted ✅");
       fetchProducts();
     } catch (err) {
@@ -173,6 +175,7 @@ const Products = () => {
           </table>
         </div>
 
+        {/* Modal */}
         {modalOpen && (
           <div className="fixed inset-0 z-50 flex justify-center items-center bg-black/40 backdrop-blur-sm">
             <div className="bg-white/80 backdrop-blur-xl shadow-2xl rounded-2xl p-6 w-full max-w-md border border-white/30">
@@ -232,6 +235,7 @@ const Products = () => {
           </div>
         )}
 
+        {/* Delete Confirm */}
         {deleteConfirm && (
           <div className="fixed inset-0 z-50 flex justify-center items-center bg-black/40 backdrop-blur-sm">
             <div className="bg-white/90 rounded-xl p-6 w-full max-w-sm text-center">
