@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import DashboardLayout from "../components/DashboardLayout";
 
-const BACKEND_URL = "https://kflex-backend.vercel.app"; // ✅ Production URL
+const BACKEND_URL = "https://kflex-backend.vercel.app";
 
 const Products = () => {
   const [products, setProducts] = useState([]);
@@ -69,10 +69,7 @@ const Products = () => {
 
     try {
       if (editingProduct) {
-        await axios.put(
-          `${BACKEND_URL}/api/products/${editingProduct._id}`,
-          formData
-        );
+        await axios.put(`${BACKEND_URL}/api/products/${editingProduct._id}`, formData);
         showAlert("Product Updated ✅");
       } else {
         await axios.post(`${BACKEND_URL}/api/products`, formData);
@@ -143,15 +140,12 @@ const Products = () => {
             </thead>
             <tbody>
               {products.map((p) => (
-                <tr
-                  key={p._id}
-                  className="border-b transition hover:bg-yellow-50 hover:scale-[1.005]"
-                >
+                <tr key={p._id} className="border-b hover:bg-yellow-50">
                   <td className="p-3">
                     <img
                       src={p.image}
                       alt={p.name}
-                      className="w-16 h-16 object-cover rounded-lg shadow"
+                      className="w-16 h-16 object-cover rounded-lg"
                     />
                   </td>
                   <td className="p-3">{p.name}</td>
@@ -159,17 +153,15 @@ const Products = () => {
                   <td className="p-3 flex gap-2">
                     <button
                       onClick={() => openModal(p)}
-                      title="Edit"
                       className="bg-yellow-400 text-black px-3 py-1 rounded hover:bg-yellow-500"
                     >
-                      ✏️
+                      Edit
                     </button>
                     <button
                       onClick={() => confirmDelete(p._id)}
-                      title="Delete"
                       className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
                     >
-                      🗑️
+                      Delete
                     </button>
                   </td>
                 </tr>
@@ -178,56 +170,55 @@ const Products = () => {
           </table>
         </div>
 
-        {/* ✅ MODAL UI */}
+        {/* Modal */}
         {modalOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-            <div className="bg-white p-6 rounded-xl w-full max-w-lg shadow-2xl relative">
+          <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50">
+            <div className="bg-white p-6 rounded-2xl shadow-xl w-full max-w-md relative">
               <button
                 onClick={() => setModalOpen(false)}
-                className="absolute top-2 right-4 text-2xl text-gray-600 hover:text-black"
+                className="absolute top-2 right-3 text-2xl text-gray-500 hover:text-black"
               >
                 &times;
               </button>
               <h3 className="text-xl font-bold mb-4 text-yellow-700">
                 {editingProduct ? "Edit Product" : "Add Product"}
               </h3>
-              <form onSubmit={handleSubmit} className="space-y-4">
+              <form onSubmit={handleSubmit} className="space-y-3">
                 <input
                   type="text"
                   name="name"
+                  placeholder="Product Name"
                   value={form.name}
                   onChange={handleChange}
-                  placeholder="Product Name"
                   required
                   className="w-full border p-2 rounded-xl"
                 />
                 <textarea
                   name="description"
+                  placeholder="Description"
                   value={form.description}
                   onChange={handleChange}
-                  placeholder="Product Description"
                   required
                   className="w-full border p-2 rounded-xl"
                 />
                 <input
                   type="number"
                   name="price"
+                  placeholder="Price"
                   value={form.price}
                   onChange={handleChange}
-                  placeholder="Price"
                   required
                   className="w-full border p-2 rounded-xl"
                 />
                 <input
                   type="file"
-                  name="image"
-                  onChange={handleImage}
                   accept="image/*"
+                  onChange={handleImage}
                   className="w-full"
                 />
                 <button
                   type="submit"
-                  className="bg-[#feb500] text-black px-4 py-2 rounded-xl w-full font-semibold hover:bg-yellow-600 transition"
+                  className="bg-yellow-500 w-full py-2 text-white rounded-xl hover:bg-yellow-600"
                 >
                   {editingProduct ? "Update" : "Add"} Product
                 </button>
