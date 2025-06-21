@@ -23,7 +23,7 @@ const Analytics = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const baseURL = process.env.REACT_APP_API_URL;
+      const baseURL = "https://kflex-backend.vercel.app"; // ✅ Replaced directly
 
       const ordersRes = await axios.get(`${baseURL}/api/orders`);
       const productsRes = await axios.get(`${baseURL}/api/products`);
