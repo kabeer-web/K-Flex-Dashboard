@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import DashboardLayout from "../components/DashboardLayout";
 
+axios.defaults.withCredentials = true; // ✅ CORS fix
+
 const BACKEND_URL = "https://kflex-backend.vercel.app";
 
 const Products = () => {
@@ -71,11 +73,16 @@ const Products = () => {
       if (editingProduct) {
         await axios.put(
           `${BACKEND_URL}/api/products/${editingProduct._id}`,
-          formData
+          formData,
+          {
+            headers: { "Content-Type": "multipart/form-data" },
+          }
         );
         showAlert("Product Updated ✅");
       } else {
-        await axios.post(`${BACKEND_URL}/api/products`, formData);
+        await axios.post(`${BACKEND_URL}/api/products`, formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
         showAlert("Product Added ✅");
       }
       fetchProducts();
